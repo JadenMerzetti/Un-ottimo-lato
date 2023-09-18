@@ -4,26 +4,26 @@ const path = require('path');
 const express = require('express');
 const app = express();
 
-const notes = require('./Develop/db/db.json'); 
+const notes = require('./db/db.json'); 
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static('./Develop/public'));
+app.use(express.static('./public'));
 
 app.get('/api/notes', (req, res) => { 
     res.json(notes);
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, './Develop/public/index.html'));
+    res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
 app.get('/notes', (req, res) => { 
-    res.sendFile(path.join(__dirname, './Develop/public/notes.html'));
+    res.sendFile(path.join(__dirname, './public/notes.html'));
 });
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, './Develop/public/index.html'));
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 function createNewNote(noteData, notesArray) { 
@@ -31,7 +31,7 @@ function createNewNote(noteData, notesArray) {
     newNote.id = Date.now();
     notesArray.push(newNote); 
     fs.writeFileSync(
-        path.join(__dirname, './Develop/db/db.json'), 
+        path.join(__dirname, './db/db.json'), 
         JSON.stringify(notesArray, null, 2)
     );
     return newNote; 
@@ -46,7 +46,7 @@ function deleteNote(id, notesArray) {
     const updatedNotes = notesArray.filter((note) => note.id !== id);
 
     fs.writeFileSync(
-        path.join(__dirname, './Develop/db/db.json'), 
+        path.join(__dirname, './db/db.json'), 
         JSON.stringify(updatedNotes, null, 2)
     );
 }
